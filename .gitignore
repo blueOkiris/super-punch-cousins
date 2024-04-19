@@ -1,6 +1,7 @@
-# NES output
+# CC65 output
 
 *.nes
 *.o
 *.dbg
+obj/
 

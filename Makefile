@@ -6,12 +6,16 @@
 
 OBJNAME :=		super-punch-cousins
 CFG :=			spc.cfg
-SRC :=			$(wildcard src/*.s)
+ASSRC :=		$(wildcard src/*.s)
+ASOBJS :=		$(subst .s,.o,$(subst src/,obj/,$(ASSRC)))
+ASINC :=		src/mmap.s
 
 ## Compiler Settings
 
+AS :=			ca65
+ASFLAGS :=		--verbose --target nes
 LD :=			cl65
-LDFLAGS :=		--verbose --target nes
+LDFLAGS :=		--verbose --target nes -C $(CFG)
 
 # Targets
 
@@ -28,6 +32,10 @@ clean:
 
 ## Main
 
-$(OBJNAME).nes: $(SRC)
-	$(LD) $(LDFLAGS) -C $(CFG) $^ -o $@
+obj/%.o: src/%.s $(ASINC)
+	mkdir -p obj
+	$(AS) $(ASFLAGS) $< -o $@
+
+$(OBJNAME).nes: $(ASOBJS)
+	$(LD) $(LDFLAGS) $^ -o $@
 
