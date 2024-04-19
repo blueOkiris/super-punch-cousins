@@ -8,14 +8,21 @@ OBJNAME :=		super-punch-cousins
 CFG :=			spc.cfg
 ASSRC :=		$(wildcard src/*.s)
 ASOBJS :=		$(subst .s,.o,$(subst src/,obj/,$(ASSRC)))
-ASINC :=		src/mmap.s
+ASINC :=		$(wildcard include/*.s)
+CSRC :=			$(wildcard src/*.c)
+CGEN :=			$(subst .c,.s,$(subst src/,gen/,$(CSRC)))
+COBJS :=		$(subst .c,.o,$(subst src/,obj/,$(CSRC)))
+CINC :=			$(wildcard include/*.h)
 
 ## Compiler Settings
 
 AS :=			ca65
-ASFLAGS :=		--verbose --target nes
-LD :=			cl65
-LDFLAGS :=		--verbose --target nes -C $(CFG)
+ASFLAGS :=		--target nes
+CC :=			cc65
+CFLAGS :=		--target nes -Oirs --add-source -Werror \
+				-Iinclude
+LD :=			ld65
+LDFLAGS :=		-C $(CFG)
 
 # Targets
 
@@ -26,7 +33,8 @@ all: $(OBJNAME).nes
 
 .PHONY: clean
 clean:
-	rm -rf src/*.o
+	rm -rf obj/
+	rm -rf gen/
 	rm -rf *.nes
 	rm -rf *.dbg
 
@@ -36,6 +44,14 @@ obj/%.o: src/%.s $(ASINC)
 	mkdir -p obj
 	$(AS) $(ASFLAGS) $< -o $@
 
-$(OBJNAME).nes: $(ASOBJS)
-	$(LD) $(LDFLAGS) $^ -o $@
+gen/%.s: src/%.c $(CINC)
+	mkdir -p gen
+	$(CC) $(CFLAGS) $< -o $@
+
+obj/%.o: gen/%.s
+	mkdir -p obj
+	$(AS) $(ASFLAGS) $< -o $@
+
+$(OBJNAME).nes: $(ASOBJS) $(COBJS)
+	$(LD) $(LDFLAGS) $^ -o $@ nes.lib
 

@@ -8,9 +8,9 @@
 .import init_global_vars
 .import hello
 .import palettes_to_ppu
-.import counter16
+.import _counter16
 .import right_shift
-
+.import _incr_c16                   ; Little endian
 .segment "CODE"
 
 main:
@@ -26,11 +26,11 @@ main:
     ldx     #0                      ; Flag to say if we counted this loop
     ldy     hello + 8 + 3           ; Store the H's OAM pos in y
 loop:
-    jsr     incr_c16
+    jsr     _incr_c16
 
     ; Calculate H position
-    lda     counter16 + 1           ; Take the slow counting high byte
-    pha                             ; Shift (divide) to scale
+    lda     _counter16              ; Little endian, so high byte is really low byte
+    pha
     lda     #4
     pha
     jsr     right_shift
@@ -53,12 +53,12 @@ loop:
     jmp     loop
 
 ; Increment a 16 bit counter which we can use for subpixels
-incr_c16:
-    inc     counter16 + 1           ; Low byte
-    bne     @no_overflow
-    inc     counter16               ; High++ bc yes_overflow
-@no_overflow:
-    rts
+;incr_c16:
+;    inc     counter16 + 1           ; Low byte
+;    bne     @no_overflow
+;    inc     counter16               ; High++ bc yes_overflow
+;@no_overflow:
+;    rts
 
 ; Update the PPU here
 nmi:

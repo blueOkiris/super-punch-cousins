@@ -5,7 +5,7 @@
 .export init_global_vars
 .export palettes
 .export hello
-.export counter16
+.export _counter16
 
 .segment "CODE"
 
@@ -30,7 +30,7 @@ init_global_vars:
 
     ; counter16
     lda     #0
-    sta     counter16
+    sta     _counter16
 
     rts
 
@@ -84,6 +84,6 @@ hello:
     .byte   0, 0, 0, 0
     .byte   0, 0, 0, 0
 
-counter16:
+_counter16:
     .byte   0
     .byte   0

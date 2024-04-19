@@ -4,4 +4,5 @@
 *.o
 *.dbg
 obj/
+gen/
 
