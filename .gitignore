@@ -1,0 +1,6 @@
+# NES output
+
+*.nes
+*.o
+*.dbg
+
