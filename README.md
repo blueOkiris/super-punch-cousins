@@ -1,5 +1,7 @@
 # Super Punch Cousins
 
+NOTE: JUST STARTED - NOT FINISHED (Hence why issues are closed)
+
 ## Description
 
 A paltform-fighter for the NES
