@@ -19,7 +19,7 @@ CINC :=			$(wildcard include/*.h)
 AS :=			ca65
 ASFLAGS :=		--target nes
 CC :=			cc65
-CFLAGS :=		--target nes -Oirs --add-source -Werror \
+CFLAGS :=		--target nes -O --add-source -Werror \
 				-Iinclude
 LD :=			ld65
 LDFLAGS :=		-C $(CFG)
@@ -40,11 +40,11 @@ clean:
 
 ## Main
 
-obj/%.o: src/%.s $(ASINC)
+obj/%.o: src/%.s $(ASINC) (CINC)
 	mkdir -p obj
 	$(AS) $(ASFLAGS) $< -o $@
 
-gen/%.s: src/%.c $(CINC)
+gen/%.s: src/%.c $(CINC) $(ASINC)
 	mkdir -p gen
 	$(CC) $(CFLAGS) $< -o $@
 
@@ -52,6 +52,6 @@ obj/%.o: gen/%.s
 	mkdir -p obj
 	$(AS) $(ASFLAGS) $< -o $@
 
-$(OBJNAME).nes: $(ASOBJS) $(COBJS)
-	$(LD) $(LDFLAGS) $^ -o $@ nes.lib
+$(OBJNAME).nes: $(ASOBJS) $(COBJS) $(CFG)
+	$(LD) $(LDFLAGS) $(ASOBJS) $(COBJS) -o $@ nes.lib
 
