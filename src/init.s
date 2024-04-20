@@ -61,6 +61,6 @@ reset:
     jmp     _start
 
 nmi:
-    jmp     _nmi
+    jsr     _nmi
     rti
 

@@ -40,7 +40,7 @@ clean:
 
 ## Main
 
-obj/%.o: src/%.s $(ASINC) (CINC)
+obj/%.o: src/%.s $(ASINC) $(CINC)
 	mkdir -p obj
 	$(AS) $(ASFLAGS) $< -o $@
 
