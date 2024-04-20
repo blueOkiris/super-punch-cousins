@@ -17,6 +17,7 @@
 extern uint8_t BTNS;
 
 void input_read_p1(void);
+void input_read_p2(void);
 
 #endif
 

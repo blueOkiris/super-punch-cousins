@@ -32,7 +32,7 @@ void start(void) {
 
     while (1) {
         COUNTER++;
-        input_read_p1();
+        input_read_p2();
         if (BTNS & BTN_RIGHT && COUNTER % TEST_SUB_COUNT_SCALE == 0) {
             TEST_X_SUB++;
             TEST.x = (uint8_t) (TEST_X_SUB >> TEST_SUB_COUNT_SCALE);
