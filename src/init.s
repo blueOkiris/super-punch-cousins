@@ -1,9 +1,9 @@
 ; Super Punch Cousins system setup code
 
-.include "../include/mmap.s"
+.include "../include/ppu.s"
 
-.import _start
-.import _nmi
+.import main
+.import nmi
 
 ; NES Header
 .segment "HEADER"
@@ -58,9 +58,5 @@ reset:
     bit     PPU_STATUS
     bpl     @vblankwait2
 
-    jmp     _start
-
-nmi:
-    jsr     _nmi
-    rti
+    jmp     main
 

@@ -1,50 +1,41 @@
 ; Read from the controller
 
-.export _BTNS
-.export _input_read_p1
-.export _input_read_p2
+.include "../include/input.s"
 
-.define JOYPAD1     $4016
-.define JOYPAD2     $4017
+.export BTNS
+.export input_read
 
 .segment "DATA"
 
-_BTNS:
-    .byte   0
+BTNS:
+    .byte   0, 0
 
 .segment "CODE"
 
-_input_read_p1:
+input_read:
+    pha
+    txa
     pha
 
-    lda     #1
-    sta     JOYPAD1
-    sta     _BTNS
-    lsr     a
-    sta     JOYPAD1
+    ldx     #1
+    stx     JOYPAD1
+    dex
+    stx     JOYPAD1
+    ldx     #8
 @loop:
     lda     JOYPAD1
-    lsr     a
-    rol     _BTNS
-    bcc     @loop
+    and     #$03        ; Mask lowest 2 bits
+    cmp     #1          ; Set carry to button state
+    rol     BTNS
+    lda     JOYPAD2
+    and     #3
+    cmp     #1
+    rol     BTNS + 1
+    dex
+    bne     @loop
 
     pla
-    rts
-
-_input_read_p2:
-    pha
-
-    lda     #1
-    sta     JOYPAD1
-    sta     _BTNS
-    lsr     a
-    sta     JOYPAD1
-@loop:
-    lda     JOYPAD2
-    lsr     a
-    rol     _BTNS
-    bcc     @loop
-
+    tax
     pla
     rts
 
