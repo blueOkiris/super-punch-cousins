@@ -1,5 +1,7 @@
 ; Macros and defs for the PPU
 
+.include "../include/utility.s"
+
 .ifndef __PPU_S__
 .define __PPU_S__
 
@@ -80,34 +82,12 @@
     sta     OAM_DATA
 .endmacro
 
-.macro __PPU_LOAD_NAMETABLE_ROW_LOOP    ref, end, depth
-.if depth < end
-    lda     ref + depth
-    sta     PPU_DATA
-    __PPU_LOAD_NAMETABLE_ROW_LOOP   ref, end, depth + 1
-.endif
-.endmacro
-
-.macro __PPU_LOAD_NAMETABLE_LOOP        ref, index
-.if index < 960
-    __PPU_LOAD_NAMETABLE_ROW_LOOP   ref, index + 32, index
-    __PPU_LOAD_NAMETABLE_LOOP       ref, index + 32
-.endif
-.endmacro
-
 .macro PPU_LOAD_NAMETABLE               table, ref
     lda     #table
     sta     PPU_ADDR
     lda     #0
     sta     PPU_ADDR
-    __PPU_LOAD_NAMETABLE_LOOP       ref, 0
-.endmacro
-
-.macro __PPU_LOAD_ATTRTABLE_LOOP       ref, index
-.if index < 240
-    __PPU_LOAD_NAMETABLE_ROW_LOOP   ref, index + 8, index
-    __PPU_LOAD_ATTRTABLE_LOOP       ref, index + 8
-.endif
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref, 32, 960, 0
 .endmacro
 
 .macro PPU_LOAD_ATTRTABLE               table, ref
@@ -115,7 +95,7 @@
     sta     PPU_ADDR
     lda     #PPU_MEM_ATTRIBTABLE_LO
     sta     PPU_ADDR
-    __PPU_LOAD_ATTRTABLE_LOOP       ref, 0
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref, 8, 240, 0
 .endmacro
 
 .endif
