@@ -4,34 +4,69 @@
 .define __UTILITY_S__
 
 ; Do lda # then call this
-.macro FILL                     addr, len, i
-.if i < len
-    sta     addr + i
-    FILL                    addr, len, i + 1
-.endif
+.macro FILL                     addr, len
+    ldx     #0
+    sta     addr, x
+    inx
+    cpx     #len
+    bne     *-6
 .endmacro
 
 ; Do lda # then call this
-.macro DOUBLE_FILL              addr, row_len, len, i
-.if i < len
-    FILL                    addr, i + row_len, i
-    DOUBLE_FILL             addr, row_len, len, i + row_len
-.endif
+.macro DOUBLE_FILL              addr, row_len, len
+    ldx     #0
+    ldy     #0
+    sta     addr, x
+    inx
+    iny
+    cpy     #row_len
+    bne     *-7
+    cpx     #len
+    bne     *-13
 .endmacro
 
-.macro CTRL_COPY_FILL           ctrl, ref, len, i
-.if i < len
-    lda     ref + i
+.macro CTRL_COPY_FILL           ctrl, ref, len
+    ldx     #0
+    lda     ref, x
     sta     ctrl
-    CTRL_COPY_FILL          ctrl, ref, len, i + 1
-.endif
+    inx
+    cpx     #len
+    bne     *-9
 .endmacro
 
-.macro DOUBLE_CTRL_COPY_FILL    ctrl, ref, row_len, len, i
-.if i < len
-    CTRL_COPY_FILL          ctrl, ref, i + row_len, i
-    DOUBLE_CTRL_COPY_FILL   ctrl, ref, row_len, len, i + row_len
-.endif
+.macro DOUBLE_CTRL_COPY_FILL    ctrl, ref, row_len, len
+    ldx     #0
+    ldy     #0
+    lda     ref, x
+    sta     ctrl
+    inx
+    iny
+    cpy     #row_len
+    bne     *-10
+    cpx     #len
+    bne     *-16
+.endmacro
+
+.macro FILL_FROM_MEM            dest_addr, src_addr, len
+    ldx     #0
+    lda     src_addr, x
+    sta     dest_addr, x
+    inx
+    cpx     #len
+    bne     *-9
+.endmacro
+
+.macro DOUBLE_FILL_FROM_MEM     dest_addr, src_addr, row_len, len
+    ldx     #0
+    ldy     #0
+    lda     src_addr, x
+    sta     dest_addr, x
+    inx
+    iny
+    cpy     #row_len
+    bne     *-10
+    cpx     #len
+    bne     *-16
 .endmacro
 
 .macro INC_U16_BE               ref

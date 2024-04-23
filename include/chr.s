@@ -29,6 +29,29 @@
 .define CHR_A       33
 .define CHR_B       34
 .define CHR_C       35
+.define CHR_D       36
+.define CHR_E       37
+.define CHR_F       38
+.define CHR_G       39
+.define CHR_H       40
+.define CHR_I       41
+.define CHR_J       42
+.define CHR_K       43
+.define CHR_L       44
+.define CHR_M       45
+.define CHR_N       46
+.define CHR_O       47
+.define CHR_P       48
+.define CHR_Q       49
+.define CHR_R       50
+.define CHR_S       51
+.define CHR_T       52
+.define CHR_U       53
+.define CHR_V       54
+.define CHR_W       55
+.define CHR_X       56
+.define CHR_Y       57
+.define CHR_Z       58
 
 .endif __CHR_S__
 

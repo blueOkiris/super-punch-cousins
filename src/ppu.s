@@ -1,7 +1,6 @@
 ; Functionality for messing with ppu
 
 .include "../include/ppu.s"
-.include "../include/loops.s"
 
 .export ppu_enable
 .export ppu_disable
@@ -11,7 +10,7 @@
 ppu_enable:
     lda     #%10000000
     sta     PPU_CTRL
-    lda     #%00011110
+    lda     #%00001010
     sta     PPU_MASK
     rts
 

@@ -83,19 +83,25 @@
 .endmacro
 
 .macro PPU_LOAD_NAMETABLE               table, ref
+    lda     PPU_STATUS
     lda     #table
     sta     PPU_ADDR
     lda     #0
     sta     PPU_ADDR
-    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref, 32, 960, 0
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref, 32, 224
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref + 224, 32, 224
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref + 448, 32, 224
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref + 672, 32, 224
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref + 896, 32, 64
 .endmacro
 
 .macro PPU_LOAD_ATTRTABLE               table, ref
+    lda     PPU_STATUS
     lda     #table + PPU_MEM_ATTRIBTABLE_HI_OFFSET
     sta     PPU_ADDR
     lda     #PPU_MEM_ATTRIBTABLE_LO
     sta     PPU_ADDR
-    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref, 8, 240, 0
+    DOUBLE_CTRL_COPY_FILL           PPU_DATA, ref, 8, 240
 .endmacro
 
 .endif

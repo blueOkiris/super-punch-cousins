@@ -1,7 +1,7 @@
 ; Reusable data for big loops
 
-.ifndef __LOOPS_S_
-.define __LOOPS_S_
+.export LOOP_DATA_ADDR
+.export LOOP_IND
 
 .segment "ZEROPAGE"
 
@@ -13,4 +13,3 @@ LOOP_DATA_ADDR:
 LOOP_IND:
     .byte   0, 0
 
-.endif
